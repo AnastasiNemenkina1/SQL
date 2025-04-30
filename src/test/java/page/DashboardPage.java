@@ -18,6 +18,4 @@ public class DashboardPage {
     public DashboardPage(){
         heading.shouldHave(text("Личный кабинет")).shouldBe(visible);
     }
-
-
 }

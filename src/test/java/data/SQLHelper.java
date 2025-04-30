@@ -42,6 +42,4 @@ public class SQLHelper {
         QUERY_RUNNER.execute(connection, "DELETE FROM  auth_codes");
 
     }
-
-
 }
