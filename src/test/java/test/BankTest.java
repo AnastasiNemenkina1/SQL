@@ -27,14 +27,6 @@ public class BankTest {
     }
     @BeforeEach
     void setUp(){
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maxinized");
-        Map<String,Object> prefs = new HashMap<String, Object>();
-        prefs.put("credentials_enble_service", false);
-        prefs.put("password_manager_enabled", false);
-        options.setExperimentalOption("prefs", prefs);
-        Configuration.browserCapabilities = options;
-
         loginPage = open("http://localhost:9999", LoginPage.class);
     }
 
