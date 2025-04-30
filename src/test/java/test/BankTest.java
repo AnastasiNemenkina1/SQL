@@ -1,3 +1,5 @@
+package test;
+
 import com.codeborne.selenide.Configuration;
 import data.DataHelper;
 import data.SQLHelper;
