@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import static com.codeborne.selenide.Selenide.open;
-import static data.SQLHelper.cleanAuthCodes;
+import static data.DataHelper..cleanAuthCodes;
 import static data.SQLHelper.cleanDataBase;
 
 public class BankTest {

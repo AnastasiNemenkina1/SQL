@@ -9,7 +9,6 @@ public class DataHelper {
     private static final Faker FAKER = new Faker(new Locale("en"));
 
     private DataHelper() {
-
     }
 
     public static AuthInfo getAuthInfoWithTestData() {
@@ -18,7 +17,6 @@ public class DataHelper {
 
     private static String generateRandomLogin() {
         return FAKER.name().username();
-
     }
 
     private static String generateRandomPassword() {
@@ -37,11 +35,13 @@ public class DataHelper {
     public static class AuthInfo {
         String login;
         String password;
-
     }
 
     @Value
     public static class VerificationCode {
-        String сode;
+        String code; // Исправлено с кириллической 'с' на латинскую 'c'
+
+        public String getСode() {
+        }
     }
 }
