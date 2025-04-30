@@ -17,24 +17,26 @@ import static data.SQLHelper.cleanDataBase;
 public class BankLoginTest {
     LoginPage loginPage;
 
+    @BeforeAll
+    static void setUpAll() {
+        Configuration.browserCapabilities = new ChromeOptions();
+        Map<String, Object> prefs = new HashMap<>();
+        prefs.put("profile.password_manager_leak_detection", false);
+        ((ChromeOptions) Configuration.browserCapabilities).setExperimentalOption("prefs", prefs);
+    }
+
     @AfterEach
     void tearDown() {
         cleanAuthCodes();
     }
+
     @AfterAll
-    static void tearDownAll(){
+    static void tearDownAll() {
         cleanDataBase();
     }
-    @BeforeEach
-    void setUp(){
-        ChromeOptions options = new ChromeOptions();
-        options.addArguments("--start-maxinized");
-        Map<String,Object> prefs = new HashMap<String, Object>();
-        prefs.put("credentials_enble_service", false);
-        prefs.put("password_manager_enabled", false);
-        options.setExperimentalOption("prefs", prefs);
-        Configuration.browserCapabilities = options;
 
+    @BeforeEach
+    void setUp() {
         loginPage = open("http://localhost:9999", LoginPage.class);
     }
 
@@ -45,16 +47,17 @@ public class BankLoginTest {
         var verificationPage = loginPage.validLogin(authInfo);
         verificationPage.verifyVerificationPageVisibility();
         var verificationCode = SQLHelper.getVerificationCode();
-        verificationPage.validVerify(verificationCode.getСode());
+        verificationPage.validVerify(verificationCode.getCode());
     }
+
     @Test
     @DisplayName("Should get error notification if user is not exist in base")
-    void shouldGetErrorNotificationIfLoginWithRandomUserWhithoutAddingBase() {
+    void shouldGetErrorNotificationIfLoginWithRandomUserWithoutAddingBase() {
         var authInfo = DataHelper.generateRandomUser();
         loginPage.validLogin(authInfo);
         loginPage.verifyErrorNotification("Ошибка! Неверно указан логин или пароль");
-
     }
+
     @Test
     @DisplayName("Should get error notification if login with exist in base and active user and random verification code")
     void shouldGetErrorNotificationIfLoginWithExistUserAndRandomVerificationCode() {
@@ -62,7 +65,7 @@ public class BankLoginTest {
         var verificationPage = loginPage.validLogin(authInfo);
         verificationPage.verifyVerificationPageVisibility();
         var verificationCode = DataHelper.generateRandomVerificationCode();
-        verificationPage.verify(verificationCode.getСode());
-        verificationPage.verifyErrorNotification("Ошибка!  Неверно указан код! Попробуйте ещё раз.");
+        verificationPage.verify(verificationCode.getCode());
+        verificationPage.verifyErrorNotification("Ошибка! Неверно указан код! Попробуйте ещё раз.");
     }
 }
