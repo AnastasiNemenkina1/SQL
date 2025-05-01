@@ -1,32 +1,28 @@
-package test;
-
 import com.codeborne.selenide.Configuration;
 import data.DataHelper;
 import data.SQLHelper;
 import org.junit.jupiter.api.*;
-import org.openqa.selenium.chrome.ChromeOptions;
 import page.LoginPage;
-
-import java.util.HashMap;
-import java.util.Map;
+import page.VerificationPage;
 
 import static com.codeborne.selenide.Selenide.open;
-import static data.DataHelper..cleanAuthCodes;
-import static data.SQLHelper.cleanDataBase;
+import static java.nio.channels.SocketChannel.open;
 
 public class BankTest {
-    LoginPage loginPage;
+    private LoginPage loginPage;
 
     @AfterEach
     void tearDown() {
-        cleanAuthCodes();
+        SQLHelper.cleanAuthCodes();
     }
+
     @AfterAll
-    static void tearDownAll(){
-        cleanDataBase();
+    static void tearDownAll() {
+        SQLHelper.cleanDatabase();
     }
+
     @BeforeEach
-    void setUp(){
+    void setUp() {
         loginPage = open("http://localhost:9999", LoginPage.class);
     }
 
@@ -37,16 +33,17 @@ public class BankTest {
         var verificationPage = loginPage.validLogin(authInfo);
         verificationPage.verifyVerificationPageVisibility();
         var verificationCode = SQLHelper.getVerificationCode();
-        verificationPage.validVerify(verificationCode.getСode());
+        verificationPage.validVerify(verificationCode.getCode());
     }
+
     @Test
     @DisplayName("Should get error notification if user is not exist in base")
-    void shouldGetErrorNotificationIfLoginWithRandomUserWhithoutAddingBase() {
+    void shouldGetErrorNotificationIfLoginWithRandomUserWithoutAddingBase() {
         var authInfo = DataHelper.generateRandomUser();
         loginPage.validLogin(authInfo);
         loginPage.verifyErrorNotification("Ошибка! Неверно указан логин или пароль");
-
     }
+
     @Test
     @DisplayName("Should get error notification if login with exist in base and active user and random verification code")
     void shouldGetErrorNotificationIfLoginWithExistUserAndRandomVerificationCode() {
@@ -54,7 +51,7 @@ public class BankTest {
         var verificationPage = loginPage.validLogin(authInfo);
         verificationPage.verifyVerificationPageVisibility();
         var verificationCode = DataHelper.generateRandomVerificationCode();
-        verificationPage.verify(verificationCode.getСode());
-        verificationPage.verifyErrorNotification("Ошибка!  Неверно указан код! Попробуйте ещё раз.");
+        verificationPage.verify(verificationCode.getCode());
+        verificationPage.verifyErrorNotification("Ошибка! Неверно указан код! Попробуйте ещё раз.");
     }
 }

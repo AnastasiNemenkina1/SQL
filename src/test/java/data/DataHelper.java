@@ -39,9 +39,10 @@ public class DataHelper {
 
     @Value
     public static class VerificationCode {
-        String code; // Исправлено с кириллической 'с' на латинскую 'c'
+        String code;  // Исправлено с "сode" (кириллица) на "code" (латиница)
 
-        public String getСode() {
+        public String getCode() {
+            return code;
         }
     }
 }
